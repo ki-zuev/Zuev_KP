@@ -2,13 +2,11 @@
 #include <cstdio>
 #include <fstream>
 #include <cstdlib>
-#include <pthread.h>
-#include <sys/sysinfo.h>
 #include <cmath>
 #include "func.h"
 using namespace std;
 
-vector<point> Steiner::steiner()
+vector<point> Steiner::flute()
 {
 	vector<point> x;
 	point p;
@@ -37,4 +35,11 @@ vector<pair<int,int>> Steiner::kruskal(vector<pair<int,pair<int,int>>> g, int m,
 		}
 	}
 	return res;
+}
+
+int manh(int x1, int y1, int x2, int y2)
+{
+	int l = 0;
+	l = abs(x1-x2)+abs(y1-y2);
+	return l;
 }

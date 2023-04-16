@@ -7,6 +7,8 @@
 #include <utility>
 using namespace std;
 
+int manh(int x1, int y1, int x2, int y2);
+
 struct point 
 {
 	pair<int,int> a;
@@ -18,17 +20,22 @@ class Steiner
 {
 	private:
 		int nv; //количество точек
+		int ng; //количество расстояние-точка-точка
 		vector<point> v; //точки
+		vector<pair<int, pair<int,int>>> vg; //расстояние-точка-точка
 		vector<int> p; //номера точек
 		vector<int> rank; //массив для алгоритма Крускала
 
 	public:
-		vector<point> steiner();
+		vector<point> flute();
+		
 		vector<pair<int,int>> kruskal(vector<pair<int,pair<int,int>>> g, int m, int n);
+		
 		int find_get(int v) //функция для алгоритма Крускала
 		{
 			return (v == p[v]) ? v : (p[v] = find_get(p[v]));
 		}
+		
 		void union_sets(int a, int b) //функция для алгоритма Крускала
 		{
 			a = find_get(a);
@@ -43,13 +50,14 @@ class Steiner
 			}
 		}
 
-		Steiner(vector<point> v_point, int n) // конструктор
+		Steiner(vector<point> v_point, vector<pair<int, pair<int,int>>> v_graph, int n, int m) // конструктор
 		{
 			nv = n;
-			set(v_point, nv);
+			ng = m;
+			set(v_point, v_graph, nv, ng);
 		}
 
-		void set(vector<point> v_point, int n) // заполнение массивов
+		void set(vector<point> v_point, vector<pair<int, pair<int,int>>> v_graph, int n, int m) // заполнение точек
 		{
 			int i;
 			for (i = 0; i < n; i++)
@@ -58,14 +66,27 @@ class Steiner
 				p.push_back(i);
 				rank.push_back(0);
 			}
+			for (i = 0; i < m; i++)
+			{
+				vg.push_back(v_graph[i]);
+			}
 		}
 
-		void get() // печать
+		void getv() // печать точек
 		{
 			int i;
 			for (i = 0; i < nv; i++)
 			{
 				printf("%d %d %i\n", v[i].a.first, v[i].a.second, v[i].s);
+			}
+		}
+
+		void getg() // печать графа
+		{
+			int i;
+			for (i = 0; i < ng; i++)
+			{
+				printf("%d %d %d\n", vg[i].first, vg[i].second.first, vg[i].second.second);
 			}
 		}
 
