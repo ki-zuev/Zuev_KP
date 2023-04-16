@@ -9,7 +9,7 @@ using namespace std;
 
 struct point 
 {
-	pair<double,double> a;
+	pair<int,int> a;
 	bool s;
 	point(){s = false;}
 };
@@ -17,19 +17,19 @@ struct point
 class Steiner
 {
 	private:
-		int nv;
-		vector<point> v;
-		vector<int> p;
-		vector<int> rank;
+		int nv; //количество точек
+		vector<point> v; //точки
+		vector<int> p; //номера точек
+		vector<int> rank; //массив для алгоритма Крускала
 
 	public:
 		vector<point> steiner();
 		vector<pair<int,int>> kruskal(vector<pair<int,pair<int,int>>> g, int m, int n);
-		int find_get(int v) 
+		int find_get(int v) //функция для алгоритма Крускала
 		{
 			return (v == p[v]) ? v : (p[v] = find_get(p[v]));
 		}
-		void union_sets(int a, int b)
+		void union_sets(int a, int b) //функция для алгоритма Крускала
 		{
 			a = find_get(a);
 			b = find_get(b);
@@ -43,13 +43,13 @@ class Steiner
 			}
 		}
 
-		Steiner(vector<point> v_point, int n)
+		Steiner(vector<point> v_point, int n) // конструктор
 		{
 			nv = n;
 			set(v_point, nv);
 		}
 
-		void set(vector<point> v_point, int n)
+		void set(vector<point> v_point, int n) // заполнение массивов
 		{
 			int i;
 			for (i = 0; i < n; i++)
@@ -60,16 +60,16 @@ class Steiner
 			}
 		}
 
-		void get()
+		void get() // печать
 		{
 			int i;
 			for (i = 0; i < nv; i++)
 			{
-				printf("%lf %lf %i\n", v[i].a.first, v[i].a.second, v[i].s);
+				printf("%d %d %i\n", v[i].a.first, v[i].a.second, v[i].s);
 			}
 		}
 
-		void append(point s_point)
+		void append(point s_point) // новая точка
 		{
 			nv = nv+1;
 			s_point.s = true;
