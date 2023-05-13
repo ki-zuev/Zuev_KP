@@ -6,14 +6,52 @@
 #include "func.h"
 using namespace std;
 
-vector<point> Steiner::flute()
+bool comp (pair<int,int> a, pair<int,int> b)
 {
-	vector<point> x;
-	point p;
+        return a.second < b.second;
+}
+
+int Steiner::steiner()
+{
+	int result = 0;
+	for (int i = 0; i < nv; i++)
+	{
+          if (!used[i])
+          {
+            dfs(i);
+            result += flute(pgraph);
+          }
+          pgraph.clear();
+        }
+	return result;
+}
+
+int Steiner::flute(vector<int> graph)
+{
+	/*point p;
 	p.a.first = 10;
 	p.a.second = 15;
-	append(p);
-	return x;
+	append(p);*/
+	int n = graph.size();
+	vector<pair<int,int>> x(n);
+	vector<pair<int,int>> y(n);
+	for (int i=0; i<n; i++)
+	{
+	  x[i].first = graph[i];
+	  x[i].second = v[graph[i]].a.first;
+	  y[i].first = graph[i];
+	  y[i].second = v[graph[i]].a.second;
+	}
+	sort (x.begin(), x.end(), comp);
+	sort (y.begin(), y.end(), comp);
+	vector<int> xh(n-1);
+	vector<int> yv(n-1);
+	for (int i=0; i<n-1; i++)
+	{
+	  xh[i] = x[i+1].second-x[i].second;
+	  yv[i] = y[i+1].second-y[i].second;
+	}
+        return 1;
 }
 
 vector<pair<int,int>> Steiner::kruskal(vector<pair<int,pair<int,int>>> g, int m, int n)
@@ -35,6 +73,30 @@ vector<pair<int,int>> Steiner::kruskal(vector<pair<int,pair<int,int>>> g, int m,
 		}
 	}
 	return res;
+}
+
+// DFS для поиска подграфов
+void Steiner::dfs(int v) 
+{
+    int u = 0;
+    used[v] = true; // отмечаем, что вершина посещена
+    pgraph.push_back(v); // добавляем её в текущий подграф
+    
+    // запускаем DFS от всех непосещённых соседей вершины v
+    if (pgraph.size() < 9)
+    {
+    for (int i = 0; i < ng; i++)
+    {
+      if (vg[i].first == v)
+      {
+        u = vg[i].second;
+        if (!used[u])
+        {
+            dfs(u);
+        }
+      }
+    }
+    }
 }
 
 int manh(int x1, int y1, int x2, int y2)

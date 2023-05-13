@@ -22,21 +22,28 @@ class Steiner
 		int nv; //количество точек
 		int ng; //количество расстояние-точка-точка
 		vector<point> v; //точки
-		vector<pair<int, pair<int,int>>> vg; //расстояние-точка-точка
+		//vector<pair<int, pair<int,int>>> vg; //расстояние-точка-точка
+		vector<pair<int,int>> vg; //точка-точка
 		vector<int> p; //номера точек
 		vector<int> rank; //массив для алгоритма Крускала
+		vector<int> pgraph; //подграф
+		vector<bool> used;
 
 	public:
-		vector<point> flute();
+		int steiner();
+		
+		int flute(vector<int> graph);
 		
 		vector<pair<int,int>> kruskal(vector<pair<int,pair<int,int>>> g, int m, int n);
 		
-		int find_get(int v) //функция для алгоритма Крускала
+		void dfs(int v);
+		
+		int find_get(int v) // функция для алгоритма Крускала
 		{
 			return (v == p[v]) ? v : (p[v] = find_get(p[v]));
 		}
 		
-		void union_sets(int a, int b) //функция для алгоритма Крускала
+		void union_sets(int a, int b) // функция для алгоритма Крускала
 		{
 			a = find_get(a);
 			b = find_get(b);
@@ -50,20 +57,21 @@ class Steiner
 			}
 		}
 
-		Steiner(vector<point> v_point, vector<pair<int, pair<int,int>>> v_graph, int n, int m) // конструктор
+		Steiner(vector<point> v_point, vector<pair<int,int>> v_graph, int n, int m) // конструктор
 		{
 			nv = n;
 			ng = m;
 			set(v_point, v_graph, nv, ng);
 		}
 
-		void set(vector<point> v_point, vector<pair<int, pair<int,int>>> v_graph, int n, int m) // заполнение точек
+		void set(vector<point> v_point, vector<pair<int,int>> v_graph, int n, int m) // заполнение точек
 		{
 			int i;
 			for (i = 0; i < n; i++)
 			{
 				v.push_back(v_point[i]);
 				p.push_back(i);
+				used.push_back(false);
 				rank.push_back(0);
 			}
 			for (i = 0; i < m; i++)
@@ -86,7 +94,7 @@ class Steiner
 			int i;
 			for (i = 0; i < ng; i++)
 			{
-				printf("%d %d %d\n", vg[i].first, vg[i].second.first, vg[i].second.second);
+				printf("%d %d\n", vg[i].first, vg[i].second);
 			}
 		}
 

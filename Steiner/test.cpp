@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
 	n = z;
 	f2 >> S1 >> S1 >> z;
 	n_g = z-n;
-	vector<pair<int, pair<int,int>>> g(n_g);
+	//vector<pair<int, pair<int,int>>> g(n_g);
+	vector<pair<int,int>> g(n_g);
 	n = 0;
 	while (n < n_g)
 	{
@@ -80,7 +81,8 @@ int main(int argc, char *argv[])
 					s1.push_back(s[k]);
 					k = k+1;
 				}
-				g[n].second.second = n_a+stoi(s1);
+				//g[n].second.second = n_a+stoi(s1);
+				g[n].second = n_a+stoi(s1);
 			}
 			if (s[0] == 'a')
 			{
@@ -91,24 +93,28 @@ int main(int argc, char *argv[])
 					s1.push_back(s[k]);
 					k = k+1;
 				}
-				g[n].second.second = stoi(s1);
+				//g[n].second.second = stoi(s1);
+				g[n].second = stoi(s1);
 			}
-			g[n].second.first = g1;
-			g[n].first = manh(a[g[n-res].second.first].a.first, a[g[n].second.first].a.second, a[g[n].second.second].a.first, a[g[n].second.second].a.second);
+			//g[n].second.first = g1;
+			g[n].first = g1;
+			//g[n].first = manh(a[g[n-res].second.first].a.first, a[g[n].second.first].a.second, a[g[n].second.second].a.first, a[g[n].second.second].a.second);
 			n = n+1;
 			res = res+1;
 		}
 	}
 	Steiner S(a, g, n_a, n_g);
-	S.flute();
 	//S.getv();
 	//S.getg();
-	vector<pair<int,int>> result;
+	int result = 0;
+	result = S.steiner();
+	printf("%d\n", result);
+	/*vector<pair<int,int>> result;
 	result = S.kruskal(g, n_g, n_a);
 	for (i = 0; i < result.size(); i++)
 	{
 		printf("%d %d\n", result[i].first, result[i].second);
-	}
+	}*/
 
 	return 0;
 }
