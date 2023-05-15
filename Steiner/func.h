@@ -19,14 +19,14 @@ struct point
 class Steiner
 {
 	private:
-		int nv; //количество точек
-		int ng; //количество расстояние-точка-точка
-		vector<point> v; //точки
-		//vector<pair<int, pair<int,int>>> vg; //расстояние-точка-точка
-		vector<pair<int,int>> vg; //точка-точка
-		vector<int> p; //номера точек
-		vector<int> rank; //массив для алгоритма Крускала
-		vector<int> pgraph; //подграф
+		int nv; // количество точек
+		int ng; // количество точка-точка
+		vector<point> v; // точки
+		//vector<pair<int, pair<int,int>>> vg; // расстояние-точка-точка
+		vector<pair<int,int>> vg; // точка-точка
+		vector<int> p; // номера точек
+		vector<int> rank; // массив для алгоритма Крускала
+		vector<int> pgraph; //п одграф
 		vector<bool> used;
 
 	public:
