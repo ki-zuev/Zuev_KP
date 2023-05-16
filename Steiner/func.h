@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <utility>
 using namespace std;
 
@@ -22,7 +24,7 @@ class Steiner
 		int nv; // количество точек
 		int ng; // количество точка-точка
 		vector<point> v; // точки
-		//vector<pair<int, pair<int,int>>> vg; // расстояние-точка-точка
+				 //vector<pair<int, pair<int,int>>> vg; // расстояние-точка-точка
 		vector<pair<int,int>> vg; // точка-точка
 		vector<int> p; // номера точек
 		vector<int> rank; // массив для алгоритма Крускала
@@ -31,18 +33,18 @@ class Steiner
 
 	public:
 		int steiner();
-		
+
 		int flute(vector<int> graph);
-		
+
 		vector<pair<int,int>> kruskal(vector<pair<int,pair<int,int>>> g, int m, int n);
-		
+
 		void dfs(int v);
-		
+
 		int find_get(int v) // функция для алгоритма Крускала
 		{
 			return (v == p[v]) ? v : (p[v] = find_get(p[v]));
 		}
-		
+
 		void union_sets(int a, int b) // функция для алгоритма Крускала
 		{
 			a = find_get(a);
