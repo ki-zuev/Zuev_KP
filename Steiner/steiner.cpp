@@ -1,15 +1,5 @@
 #include "func.h"
 
-int k = 0;
-int c = 0;
-
-/*void remove(vector<int> v, int index)
-  {
-  auto it = v.begin();
-  advance(it, index);
-  v.erase(it);
-  }*/
-
 bool comp (pair<int,int> a, pair<int,int> b)
 {
 	return a.second < b.second;
@@ -23,64 +13,55 @@ int Steiner::steiner()
 		if (!used[i])
 		{
 			dfs(i);
-			k = k+1;
 			result += flute(pgraph);
 		}
 		pgraph.clear();
 	}
-	printf("k%d\n", k);
-	printf("c%d\n", c);
 	return result;
 }
 
 int Steiner::flute(vector<int> graph)
 {
-	/*point p;
-	  p.a.first = 10;
-	  p.a.second = 15;
-	  append(p);*/
 	int u = 0, vect = 0, n = graph.size(), m = 0, result = 0, flag = 0, flag1 = 0;
 	for (int j = 0; j < n; j++)
 	{
-	vect = graph[j];
-	for (int i = 0; i < ng; i++)
-	{
-		if (vg[i].first == vect)
+		vect = graph[j];
+		for (int i = 0; i < ng; i++)
 		{
-			u = vg[i].second;
-			for (int k = 0; k < n; k++)
-	                  if (u == graph[k])
-	                    flag1 = -1;
-			if (flag1 == 0)
+			if (vg[i].first == vect)
 			{
-				result += manh(v[vect].a.first, v[vect].a.second, v[u].a.first, v[u].a.second);
-				c = c+1;
-				flag = 1;
-				break;
+				u = vg[i].second;
+				for (int k = 0; k < n; k++)
+					if (u == graph[k])
+						flag1 = -1;
+				if (flag1 == 0)
+				{
+					result += manh(v[vect].a.first, v[vect].a.second, v[u].a.first, v[u].a.second);
+					flag = 1;
+					break;
+				}
 			}
+			flag1 = 0;
+			if (vg[i].second == vect)
+			{
+				u = vg[i].first;
+				for (int k = 0; k < n; k++)
+					if (u == graph[k])
+						flag1 = -1;
+				if (flag1 == 0)
+				{
+					result += manh(v[vect].a.first, v[vect].a.second, v[u].a.first, v[u].a.second);
+					flag = 1;
+					break;
+				}
+			}
+			flag1 = 0;
 		}
-		flag1 = 0;
-		if (vg[i].second == vect)
+		if (flag == 1)
 		{
-			u = vg[i].first;
-			for (int k = 0; k < n; k++)
-	                  if (u == graph[k])
-	                    flag1 = -1;
-			if (flag1 == 0)
-			{
-				result += manh(v[vect].a.first, v[vect].a.second, v[u].a.first, v[u].a.second);
-				c = c+1;
-				flag = 1;
-				break;
-			}
+			flag = 0;
+			break;
 		}
-		flag1 = 0;
-	}
-	if (flag == 1)
-	{
-	flag = 0;
-	break;
-	}
 	}
 	vector<pair<int,int>> x(n);
 	vector<pair<int,int>> y(n);
@@ -93,27 +74,13 @@ int Steiner::flute(vector<int> graph)
 	}
 	sort (x.begin(), x.end(), comp);
 	sort (y.begin(), y.end(), comp);
-
-	//vector<pair<int,pair<int,int>>> xh(n-1);
-	//vector<pair<int,pair<int,int>>> yv(n-1);
-
 	vector<int> xh(n-1);
 	vector<int> yv(n-1);
 	for (int i=0; i<n-1; i++)
 	{
 		xh[i] = x[i+1].second-x[i].second;
 		yv[i] = y[i+1].second-y[i].second;
-
-		//xh[i].first = x[i+1].second-x[i].second;
-		//yv[i].first = y[i+1].second-y[i].second;
-
-		//xh[i].second.first = x[i].first;
-		//xh[i].second.second = x[i+1].first;
-
-		//yv[i].second.first = y[i].first;
-		//yv[i].second.second = y[i+1].first;
 	}
-
 	if (n == 2)
 	{
 		result += xh[0]+yv[0];
@@ -141,8 +108,10 @@ int Steiner::flute(vector<int> graph)
 				for (int i=0; i<n; i++)
 					if (graph[y[n-1-i].first] != -1)
 					{
+
 						graph[y[n-1-i].first] = -1;
 						result += yv[n-1-i]+xh[n-1-i];
+						break;
 					}
 				if (n >= 7)
 				{
@@ -151,6 +120,7 @@ int Steiner::flute(vector<int> graph)
 						{
 							graph[x[n-1-i].first] = -1;
 							result += xh[n-1-i]+yv[n-1-i];
+							break;
 						}
 					if (n >= 8)
 					{
@@ -159,6 +129,7 @@ int Steiner::flute(vector<int> graph)
 							{
 								graph[y[0+i].first] = -1;
 								result += yv[0+i]+xh[0+i];
+								break;
 							}
 						if (n == 9)
 						{
@@ -167,6 +138,7 @@ int Steiner::flute(vector<int> graph)
 								{
 									graph[x[1+i].first] = -1;
 									result += xh[1+i]+yv[1+i];
+									break;
 								}
 						}
 					}
@@ -182,81 +154,109 @@ int Steiner::flute(vector<int> graph)
 				flag = flag+1;
 			}
 		}
-		m = 3;
-		vector<pair<int,pair<int,int>>> g(m);
-		vector<pair<int,pair<int,int>>> g1(1);
-		for (int i=0; i<m-1; i++)
-		{
-			g[i].first = manh(v[graph1[i]].a.first, v[graph1[i]].a.second, v[graph1[i+1]].a.second, v[graph1[i+1]].a.second);
-			g[i].second.first = graph1[i];
-			g[i].second.second = graph1[i+1];
-		}
-		flag = -1;
-		for (int i=0; i<ng; i++) // добавляем путь 0-3 если он есть
-		{
-			if ((vg[i].first == graph1[0]) || (vg[i].second == graph1[0]))
-				for (int j=0; j<ng; j++)
-					if ((vg[j].first == graph1[3]) || (vg[j].second == graph1[3]))
-					{
-						g1[0].first = manh(x[0].second, y[0].second, x[3].second, y[3].second);
-						g1[0].second.first = graph1[0];
-						g1[0].second.second = graph1[3];
-						g.push_back(g1[0]);
-						m += 1;
-						flag = 1;
-						break;
-					}
-			if (flag == 1)
-			{
-				flag = -1;
-				break;
-			}
-		}
-		for (int i=0; i<ng; i++) // добавляем путь 0-2 если он есть
-		{
-			if ((vg[i].first == graph1[0]) || (vg[i].second == graph1[0]))
-				for (int j=0; j<ng; j++)
-					if ((vg[j].first == graph1[2]) || (vg[j].second == graph1[2]))
-					{
-						g1[0].first = manh(x[0].second, y[0].second, x[2].second, y[2].second);
-						g1[0].second.first = graph1[0];
-						g1[0].second.second = graph1[2];
-						g.push_back(g1[0]);
-						m += 1;
-						flag = 1;
-						break;
-					}
-			if (flag == 1)
-			{
-				flag = -1;
-				break;
-			}    
-		}
-		for (int i=0; i<ng; i++) // добавляем путь 1-3 если он есть
-		{
-			if ((vg[i].first == graph1[1]) || (vg[i].second == graph1[1]))
-				for (int j=0; j<ng; j++)
-					if ((vg[j].first == graph1[3]) || (vg[j].second == graph1[3]))
-					{
-						g1[0].first = manh(x[1].second, y[1].second, x[3].second, y[3].second);
-						g1[0].second.first = graph1[1];
-						g1[0].second.second = graph1[3];
-						g.push_back(g1[0]);
-						m += 1;
-						flag = 1;
-						break;
-					}
-			if (flag == 1)
-			{
-				flag = -1;
-				break;
-			}
-		}
-		vector<pair<int,int>> res;
+
+		/*m = 3;
+		  vector<pair<int,pair<int,int>>> g(m);
+		  vector<pair<int,pair<int,int>>> g1(1);
+		  for (int i=0; i<m-1; i++)
+		  {
+		  g[i].first = manh(v[graph1[i]].a.first, v[graph1[i]].a.second, v[graph1[i+1]].a.second, v[graph1[i+1]].a.second);
+		  g[i].second.first = graph1[i];
+		  g[i].second.second = graph1[i+1];
+		  }
+		  flag = -1;
+		  for (int i=0; i<ng; i++) // добавляем путь 0-3 если он есть
+		  {
+		  if ((vg[i].first == graph1[0]) || (vg[i].second == graph1[0]))
+		  for (int j=0; j<ng; j++)
+		  if ((vg[j].first == graph1[3]) || (vg[j].second == graph1[3]))
+		  {
+		  g1[0].first = manh(x[0].second, y[0].second, x[3].second, y[3].second);
+		  g1[0].second.first = graph1[0];
+		  g1[0].second.second = graph1[3];
+		  g.push_back(g1[0]);
+		  m += 1;
+		  flag = 1;
+		  break;
+		  }
+		  if (flag == 1)
+		  {
+		  flag = -1;
+		  break;
+		  }
+		  }
+		  for (int i=0; i<ng; i++) // добавляем путь 0-2 если он есть
+		  {
+		  if ((vg[i].first == graph1[0]) || (vg[i].second == graph1[0]))
+		  for (int j=0; j<ng; j++)
+		  if ((vg[j].first == graph1[2]) || (vg[j].second == graph1[2]))
+		  {
+		  g1[0].first = manh(x[0].second, y[0].second, x[2].second, y[2].second);
+		  g1[0].second.first = graph1[0];
+		  g1[0].second.second = graph1[2];
+		  g.push_back(g1[0]);
+		  m += 1;
+		  flag = 1;
+		  break;
+		  }
+		  if (flag == 1)
+		  {
+		  flag = -1;
+		  break;
+		  }    
+		  }
+		  for (int i=0; i<ng; i++) // добавляем путь 1-3 если он есть
+		  {
+		  if ((vg[i].first == graph1[1]) || (vg[i].second == graph1[1]))
+		  for (int j=0; j<ng; j++)
+		  if ((vg[j].first == graph1[3]) || (vg[j].second == graph1[3]))
+		  {
+		  g1[0].first = manh(x[1].second, y[1].second, x[3].second, y[3].second);
+		  g1[0].second.first = graph1[1];
+		  g1[0].second.second = graph1[3];
+		  g.push_back(g1[0]);
+		  m += 1;
+		  flag = 1;
+		  break;
+		  }
+		  if (flag == 1)
+		  {
+		  flag = -1;
+		  break;
+		  }
+		  }
+		  vector<pair<int,int>> res;
 		res = kruskal(g, m, 4);
-		for (int i=0; i<res.size(); i++)
+		for (int i=0; i<4; i++)
 		{
-			result += manh(v[res[i].first].a.first, v[res[i].first].a.second, v[res[i].second].a.first, v[res[i].second].a.second);
+			//result += manh(v[res[i].first].a.first, v[res[i].first].a.second, v[res[i].second].a.first, v[res[i].second].a.second);
+			//result += 1;
+		}*/
+
+		vector<pair<int,int>> x4(4);
+		vector<pair<int,int>> y4(4);
+		for (int i=0; i<4; i++)
+		{
+			x4[i].first = i;
+			x4[i].second = v[graph1[i]].a.first;
+			y4[i].first = i;
+			y4[i].second = v[graph1[i]].a.second;
+		}
+		sort(x4.begin(), x4.end(), comp);
+		sort(y4.begin(), y4.end(), comp);
+		vector<int> xh4(4-1);
+		vector<int> yv4(4-1);
+		for (int i=0; i<4-1; i++)
+		{
+			xh4[i] = x4[i+1].second-x4[i].second;
+			yv4[i] = y4[i+1].second-y4[i].second;
+		}
+		for (int i=0; i<4-1; i++)
+		{
+			if (i != 1)
+				result += xh4[i]+yv4[i];
+			else
+				result += 2*xh4[i]+2*yv4[i];
 		}
 	}
 	return result;
@@ -283,14 +283,11 @@ vector<pair<int,int>> Steiner::kruskal(vector<pair<int,pair<int,int>>> g, int m,
 	return res;
 }
 
-// DFS для поиска подграфов
-void Steiner::dfs(int vect) 
+void Steiner::dfs(int vect)
 {
 	int u = 0;
-	used[vect] = true; // отмечаем, что вершина посещена
-	pgraph.push_back(vect); // добавляем её в текущий подграф
-
-	// запускаем DFS от всех непосещённых соседей вершины v
+	used[vect] = true;
+	pgraph.push_back(vect);
 	if (pgraph.size() < 9)
 	{
 		for (int i = 0; i < ng; i++)
@@ -301,6 +298,16 @@ void Steiner::dfs(int vect)
 				if (!used[u])
 				{
 					dfs(u);
+					break;
+				}	
+			}
+			if (vg[i].second == vect)
+			{
+				u = vg[i].first;
+				if (!used[u])
+				{
+					dfs(u);
+					break;
 				}
 			}
 		}

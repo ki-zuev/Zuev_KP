@@ -1,10 +1,4 @@
-#include <iostream>
-#include <cstdio>
-#include <fstream>
-#include <cstdlib>
 #include "func.h"
-#include <string>
-using namespace std;
 
 int main(int argc, char *argv[])
 {
@@ -19,21 +13,40 @@ int main(int argc, char *argv[])
 	}
 	filename1 = argv[1];
 	filename2 = argv[2];
-	ifstream f1(filename1);
-	f1 >> S1 >> S1 >> z;
+	/*ifstream f1(filename1);
+	  f1 >> S1 >> S1 >> z;
+	  n_a = z;
+	  f1 >> S1 >> S1 >> z;
+	  n_p = z;
+	  vector<point> a(n_a); /////
+	  while (n < n_p)
+	  {
+	  f1 >> S1 >> x >> y >> S1 >> S1;
+	  n = n+1;
+	  }
+	  n = 0;
+	  while (n < n_a-n_p)
+	  {
+	  f1 >> S1 >> x >> y >> S1 >> S1;
+	  a[n].a.first = x;
+	  a[n].a.second = y;
+	  n = n+1;
+	  }
+	  f1.close();*/
+	ifstream f00000(filename1);
+	f00000 >> S1 >> S1 >> z;
 	n_a = z;
-	f1 >> S1 >> S1 >> z;
+	f00000 >> S1 >> S1 >> z;
 	n_p = z;
 	vector<point> a(n_a);
 	while (n < n_a)
 	{
-		f1 >> S1 >> x >> y >> S1 >> S1;
+		f00000 >> S1 >> x >> y >> S1 >> S1;
 		a[n].a.first = x;
 		a[n].a.second = y;
 		n = n+1;
 	}
-	n = 0;
-	f1.close();
+	f00000.close();
 	ifstream f2(filename2);
 	f2 >> S1 >> S1 >> z;
 	n = z;
@@ -110,11 +123,10 @@ int main(int argc, char *argv[])
 	result = S.steiner();
 	printf("%d\n", result);
 	/*vector<pair<int,int>> result;
-	result = S.kruskal(g, n_g, n_a);
-	for (i = 0; i < result.size(); i++)
-	{
-		printf("%d %d\n", result[i].first, result[i].second);
-	}*/
-
+	  result = S.kruskal(g, n_g, n_a);
+	  for (i = 0; i < result.size(); i++)
+	  {
+	  printf("%d %d\n", result[i].first, result[i].second);
+	  }*/
 	return 0;
 }

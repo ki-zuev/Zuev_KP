@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <utility>
+#include <string>
 using namespace std;
 
 int manh(int x1, int y1, int x2, int y2);
@@ -28,21 +29,21 @@ class Steiner
 		vector<pair<int,int>> vg; // точка-точка
 		vector<int> p; // номера точек
 		vector<int> rank; // массив для алгоритма Крускала
-		vector<int> pgraph; //п одграф
+		vector<int> pgraph; // подграф
 		vector<bool> used;
 
 	public:
-		int steiner();
+		int steiner(); // общая длина ребер дерева Штейнера
 
-		int flute(vector<int> graph);
+		int flute(vector<int> graph); // метод FLUTE
 
 		vector<pair<int,int>> kruskal(vector<pair<int,pair<int,int>>> g, int m, int n);
 
-		void dfs(int v);
+		void dfs(int vect); // DFS для поиска подграфов
 
-		int find_get(int v) // функция для алгоритма Крускала
+		int find_get(int vect) // функция для алгоритма Крускала
 		{
-			return (v == p[v]) ? v : (p[v] = find_get(p[v]));
+			return (vect == p[vect]) ? vect : (p[vect] = find_get(p[vect]));
 		}
 
 		void union_sets(int a, int b) // функция для алгоритма Крускала
