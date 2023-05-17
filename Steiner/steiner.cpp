@@ -254,9 +254,16 @@ int Steiner::flute(vector<int> graph)
 		for (int i=0; i<4-1; i++)
 		{
 			if (i != 1)
+			{
 				result += xh4[i]+yv4[i];
+			}
 			else
-				result += 2*xh4[i]+2*yv4[i];
+			{
+				if (xh4[i] < yv4[i])
+					result += 2*xh4[i]+yv4[i];
+				else
+					result += xh4[i]+2*yv4[i];
+			}
 		}
 	}
 	return result;
