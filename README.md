@@ -1,5 +1,3 @@
-Hi! My name is Kirill Zuev. This is my training repository.
-
 Если у вас Linux
 
 Действия, которые нужно выполнить только один раз
